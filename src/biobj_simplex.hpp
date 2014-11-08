@@ -6,7 +6,7 @@
 #include <coin/CoinPackedVector.hpp>
 #include <coin/CoinPackedMatrix.hpp>
 #include <vector>
-#include "../mo-utils/BVect.hpp"
+#include "../../mo-utils/BVect.hpp"
 
 class Biobj_simplex{
   private:
@@ -29,6 +29,8 @@ class Biobj_simplex{
     vector<BVect> solutions;
 
     void updateCosts();
+    bool computeVarIn();
+    void computeVarOut();
 
   public:
     Biobj_simplex();
@@ -37,8 +39,6 @@ class Biobj_simplex{
     void loadProblem(const CoinPackedMatrix &matrix, const double *col_lb, const double *col_ub, const double *objective1, const double *objective2, const double *row_lb, const double *row_ub);
     void solve();
     vector<BVect> getSols();
-    bool computeVarIn();
-    void computeVarOut();
 
 };
 

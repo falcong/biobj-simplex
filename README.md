@@ -14,7 +14,7 @@ You first need to install Coin-OR's CLP and OSI:
 Then:  
 `git clone`  
 `cd build`  
-`cmake .`  
+`cmake ..`  
 `make`
 
 How to use it
@@ -22,7 +22,7 @@ How to use it
 
 Biobj-simplex can be used a callable library. Examples can be found in the `examples` directory.
 
-It is planed to add a mode where the user just call an executable and pass an instance file as a parameter.
+It is planed to add a mode where the user just calls an executable and passes an instance file as a parameter.
 
 
 How it works

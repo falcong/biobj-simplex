@@ -1,4 +1,6 @@
-#include "../biobj_simplex.hpp"
+#include "../src/biobj_simplex.hpp"
+
+using namespace std;
 
 int main() {
   Biobj_simplex solver;
@@ -14,9 +16,9 @@ int main() {
    *              x1        >= 0
    *
    *  extreme efficient solutions are:
-   *  -
-   *  -
-   *  -
+   *  - a = ( 0,  0) with x0 = 0 and x1 = 0
+   *  - b = ( 3, -6) with x0 = 0 and x1 = 3
+   *  - c = (12, -9) with x0 = 3 and x1 = 3
    */
 
    int n_cols = 2;
@@ -41,7 +43,7 @@ int main() {
    col_ub[0] = solver.getInfinity();
    col_ub[1] = solver.getInfinity();
      
-   int n_rows = 2+1;
+   int n_rows = 2;
    double *row_lb = new double[n_rows]; //the row lower bounds
    double *row_ub = new double[n_rows]; //the row upper bounds
      
@@ -67,4 +69,13 @@ int main() {
 
    solver.loadProblem(*matrix, col_lb, col_ub, objective1, objective2, row_lb, row_ub);
    solver.solve();
+
+   vector<BVect> solutions = solver.getSols();
+   cout << "The problem has " << solutions.size() << " non dominated points:" << endl;
+   for(vector<BVect>::iterator solution = solutions.begin(); solution != solutions.end(); solution++) {
+    cout << "\t" << solution->_y1 << " " << solution->_y2 << " | " 
+      << solution->_x.at(0) << " " << solution->_x.at(1) << endl;
+   }
+
+   return 0;
 }
