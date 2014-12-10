@@ -9,10 +9,14 @@ Installation
 ------------
 
 You first need to install Coin-OR's CLP and OSI:  
-`apt-get install …`
+`apt-get install coinor-libclp1 coinor-libclp-dev coinor-libcoinutils3 coinor-libcoinutils-dev coinor-libosi1 coinor-libosi-dev`
 
 Then:  
-`git clone`  
+`cd your_work_dir`  
+`git clone https://github.com/tvincent2/mo-utils.git`  
+`git clone https://github.com/tvincent2/biobj-simplex.git`  
+`cd biobj-simplex`  
+`mkdir build`  
 `cd build`  
 `cmake ..`  
 `make`
@@ -40,4 +44,4 @@ Because it's free (as in free speech).
 License
 -------
 
-To be decided.
+A free one, of course. To be decided.
