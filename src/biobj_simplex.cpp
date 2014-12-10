@@ -37,11 +37,13 @@ void Biobj_simplex::loadProblem(const CoinPackedMatrix &matrix,
   CoinPackedVector obj2(num_cols, objective2);
   model->addRow(obj2, -1.0 * model->getInfinity(), model->getInfinity());
 
+  // allocate memory for working arrays
   cost1 = new double[num_cols + num_rows];
   cost2 = new double[num_cols + num_rows];
   work_col = new double[num_cols];
   basics = new int[num_rows];
 
+  // tell Osi and Clp to be quiet
   model->messageHandler()->setLogLevel(0);
 }
 
@@ -69,6 +71,7 @@ void Biobj_simplex::solve() {
   // tell model to allow us to do extra things
   model->enableSimplexInterface(true);
 
+  // gather data to update reduced costs
   const double* upper = model->getRowUpper();
   const double* solution = model->getColSolution();
   const double* activity = model->getRowActivity();
@@ -76,31 +79,34 @@ void Biobj_simplex::solve() {
 
   model->getBasics(basics);
 
+  // manually compute b values of the simplex tableau
   vector<double> b;
   for ( int i = 0; i < num_rows; i++ ) {
+    // the value depends on whether i is in the basis the index of a
+    // regular variable ( < num_cols ) or a slack variable ( >= )
     if(basics[i] < num_cols)
       b.push_back(solution[basics[i]]);
     else
       b.push_back(upper[i] - activity[i]);
   }
+  // gather in s the values in decision space of the current solution
   vector<double> s (solution, solution + num_cols);
 
+  // create the corresponding solution with its objective values
   BVect sol(/*-1.0 **/ model->getObjValue(), /*-1.0 **/ activity[num_rows], s);
   solutions.push_back(sol);
-  //cout << sol._y1 << " " << sol._y2 << endl;
 
-  //compute var_in candidates
-  //cout << cost1[0] << " " << cost1[1] << " " << cost1[2] << " " << cost1[3] << endl;
-  //cout << cost2[0] << " " << cost2[1] << " " << cost2[2] << " " << cost2[3] << endl;
-
+  // compute candidate variables to enter the basis
   while (computeVarIn()){
+    // while at least one such variables does exist, 
+    // compute the corresponding leaving variable
     computeVarOut();
-    //cout << var_in << " doit pivoter avec " << basics[var_out] << endl;
 
-    //perform pivot
+    // perform pivot
     int outstatus = 1;
     model->pivot(var_in, basics[var_out], outstatus);
-    //cout << "----------------" << endl;
+
+    // update data used to compute reduced costs
     upper = model->getRowUpper();
     solution = model->getColSolution();
     activity = model->getRowActivity();
@@ -111,15 +117,12 @@ void Biobj_simplex::solve() {
       else
         b.push_back(upper[i] - activity[i]);
     }
+    // create the newly obtained solution
     vector<double> s (solution, solution + num_cols);
 
     BVect sol2(/*-1.0 **/ model->getObjValue(), /*-1.0 **/ activity[num_rows], s);
     solutions.push_back(sol2);
-    //cout << sol2._y1 << " " << sol2._y2 << endl;
     updateCosts();
-
-    //cout << cost1[0] << " " << cost1[1] << " " << cost1[2] << " " << cost1[3] << endl;
-    //cout << cost2[0] << " " << cost2[1] << " " << cost2[2] << " " << cost2[3] << endl;
   }
 }
 
@@ -134,10 +137,11 @@ bool Biobj_simplex::computeVarIn() {
   bool var_in_found = false;
   for( int i = 0; i < num_cols; i++ ) {
     if ( (cost1[i] > 0) && (cost2[i] < 0) ) {
+      // the current variable is eligible to enter the basis
       double candidateLambda = (-cost2[i]/(cost1[i]-cost2[i]));
-      //cout << i << " : " << candidateLambda << endl;
       var_in_found = true;
       if (candidateLambda > lambda) {
+        // the entering variable to select has the greatest lambda value
         lambda = candidateLambda;
         var_in = i;
       }
@@ -148,10 +152,14 @@ bool Biobj_simplex::computeVarIn() {
 
 
 void Biobj_simplex::computeVarOut() {
+  // update work_col to represent the column of var_in
   model->getBInvACol(var_in, work_col);
+
   double current_ratio;
   double min_ratio;
   bool one_out_found = false;
+
+  // update data (a little redundant, isn't it?)
   const double* upper = model->getRowUpper();
   const double* solution = model->getColSolution();
   const double* activity = model->getRowActivity();
@@ -163,17 +171,19 @@ void Biobj_simplex::computeVarOut() {
       b.push_back(upper[i] - activity[i]);
   }
 
-    for( int i = 0; i < num_rows; i++ ){
-      if( work_col[i] > 0){
-        current_ratio = b[basics[i]]/work_col[i];
-        if( !one_out_found ){
-          one_out_found = true;
-          var_out = i;
-          min_ratio = current_ratio;
-        } else if( current_ratio < min_ratio ) {
-          var_out = i;
-          min_ratio = current_ratio;
-        }
+  for( int i = 0; i < num_rows; i++ ){
+    if( work_col[i] > 0){
+      // the current variable is eligible to leave the basis
+      current_ratio = b[basics[i]]/work_col[i];
+      if( !one_out_found ){
+        one_out_found = true;
+        var_out = i;
+        min_ratio = current_ratio;
+      } else if( current_ratio < min_ratio ) {
+        // the leaving variable to select has the lowest ratio
+        var_out = i;
+        min_ratio = current_ratio;
       }
     }
+  }
 }
