@@ -9,6 +9,10 @@ Biobj_simplex::Biobj_simplex() {
 
 Biobj_simplex::~Biobj_simplex() {
   delete model;
+  delete[] cost1;
+  delete[] cost2;
+  delete[] work_col;
+  delete[] basics;
 }
 
 
