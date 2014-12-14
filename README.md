@@ -44,4 +44,4 @@ Because it's free (as in free speech).
 License
 -------
 
-A free one, of course. To be decided.
+LGPL 2.1. See LICENSE.md for more info.
