@@ -73,7 +73,7 @@ int main() {
    vector<BVect> solutions = solver.getSols();
    cout << "The problem has " << solutions.size() << " non dominated points:" << endl;
    for(auto& solution : solutions) {
-    cout << "\t" << solution.y1() << " " << solution.y2() << " | "
+    cout << "\t" << solution.z1() << " " << solution.z2() << " | "
       << solution.x().at(0) << " " << solution.x().at(1) << endl;
    }
 

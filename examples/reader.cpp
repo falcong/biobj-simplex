@@ -70,7 +70,7 @@ int main (int argc, char** argv){
     vector<BVect> solutions = solver.getSols();
     cout << "The problem has " << solutions.size() << " non dominated points:" << endl;
     for(auto &solution: solutions) {
-      cout << "\t" << solution.y1() << " " << solution.y2() << " |";
+      cout << "\t" << solution.z1() << " " << solution.z2() << " |";
       for (auto &x: solution.x())
         cout << " " << x;
       cout << endl;
