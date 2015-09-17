@@ -6,7 +6,7 @@
 #include <coin/CoinPackedVector.hpp>
 #include <coin/CoinPackedMatrix.hpp>
 #include <vector>
-#include "../../mo-utils/BVect.hpp"
+#include "BVect.hpp"
 
 class Biobj_simplex{
   private:

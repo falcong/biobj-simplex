@@ -1,4 +1,5 @@
 SET(CMAKE_CXX_FLAGS "-std=c++11")
+include_directories(../../mo-utils/include)
 
 add_executable(example1 example1.cpp) 
 add_executable(reader reader.cpp)
