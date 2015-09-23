@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "../src/biobj_simplex.hpp"
+#include "biobj_simplex.hpp"
 
 using namespace std;
 
