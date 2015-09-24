@@ -8,8 +8,8 @@ It relies on the [OSI](https://projects.coin-or.org/Osi) library.
 Installation
 ------------
 
-You first need to install Coin-OR's CLP and OSI:  
-`apt-get install coinor-libclp1 coinor-libclp-dev coinor-libcoinutils3 coinor-libcoinutils-dev coinor-libosi1 coinor-libosi-dev`
+You first need to install CMake, Coin-OR's CLP and OSI:  
+`apt-get install cmake coinor-libclp1 coinor-libclp-dev coinor-libcoinutils3 coinor-libcoinutils-dev coinor-libosi1 coinor-libosi-dev`
 
 Then:  
 `cd your_work_dir`  
