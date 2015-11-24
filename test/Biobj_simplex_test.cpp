@@ -66,6 +66,12 @@ class Biobj_simplex_test : public CppUnit::TestFixture {
     std::vector<BVect> solutions = solver->getSols();
 
     CPPUNIT_ASSERT(solutions.size() == 3);
+    CPPUNIT_ASSERT(solutions[0].z1() ==  0);
+    CPPUNIT_ASSERT(solutions[0].z2() ==  0);
+    CPPUNIT_ASSERT(solutions[1].z1() ==  3);
+    CPPUNIT_ASSERT(solutions[1].z2() == -6);
+    CPPUNIT_ASSERT(solutions[2].z1() == 12);
+    CPPUNIT_ASSERT(solutions[2].z2() == -9);
   }
 };
 
