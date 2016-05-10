@@ -3,16 +3,16 @@
 using namespace std;
 
 Biobj_simplex::Biobj_simplex() {
-  model = new OsiClpSolverInterface;
+  model = new OsiClpSolverInterface();
 }
 
 
 Biobj_simplex::~Biobj_simplex() {
-  delete model;
+//  delete model;
   delete[] cost1;
   delete[] cost2;
-  delete[] work_col;
-  delete[] basics;
+//  delete[] work_col;
+//  delete[] basics;
 }
 
 
