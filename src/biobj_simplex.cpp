@@ -164,6 +164,7 @@ void Biobj_simplex::computeVarOut() {
   const double* solution = model->getColSolution();
   const double* activity = model->getRowActivity();
   vector<double> b;
+  model->getBasics(basics);
   for ( int i = 0; i < num_rows; i++ ) {
     if(basics[i] < num_cols)
       b.push_back(solution[basics[i]]);
