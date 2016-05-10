@@ -135,8 +135,8 @@ vector<BVect> Biobj_simplex::getSols() {
 bool Biobj_simplex::computeVarIn() {
   lambda = 0;
   bool var_in_found = false;
-  for( int i = 0; i < num_cols; i++ ) {
-    if ( (cost1[i] > 0) && (cost2[i] < 0) ) {
+  for( int i = 0; i < num_cols + num_rows; i++ ) {
+    if ( (cost1[i] >= 0) && (cost2[i] < 0) ) {
       // the current variable is eligible to enter the basis
       double candidateLambda = (-cost2[i]/(cost1[i]-cost2[i]));
       var_in_found = true;
